@@ -1,0 +1,18 @@
+* Project 1: TODO [3/11]
++ [X] create layout.html in templates folder.
++ [X] create index.html to start with.
++ [X] Create login [3/3]
+  - [X] forms.py using flask-wtforms.
+  - [X] login.html to render login form.
+  - [X] route for login in application.py
++ [ ] Registration form.
++ [ ] Logout
++ [ ] Import the books into database.
++ [ ] Search functionality for books.
++ [ ] Extending result of search, linking to detailed description of particular book
++ [ ] Review Submission.
++ [ ] Goodreads Review data, probably linked with detailed description of
+particular book.
++ [ ] API Access.[0/2]
+  - [ ] GET request /api/<isbn> return JSON response.
+  - [ ] if ISBN not in database, return a 404 error.

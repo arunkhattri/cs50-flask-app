@@ -2,13 +2,13 @@ import os
 
 from flask import Flask, session, render_template
 from flask_session import Session
-from config import Config
+# from config import Config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from forms import LoginForm
 
 app = Flask(__name__)
-app.config.from_object(Config)
+# app.config.from_object(Config)
 
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
@@ -24,11 +24,12 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
-@app.route("/")
-def index():
-    return render_template("home.html")
+# @app.route("/")
+# def index():
+#     return render_template("home.html")
 
-@app.route("/login")
-def login():
-    form = LoginForm()
-    return render_template("login.html", form=form)
+
+# @app.route("/login")
+# def login():
+#     form = LoginForm()
+#     return render_template("login.html", form=form)

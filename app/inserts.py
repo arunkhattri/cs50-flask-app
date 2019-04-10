@@ -1,4 +1,4 @@
-from app.models import Books
+from models import Books
 from app import db
 import csv
 

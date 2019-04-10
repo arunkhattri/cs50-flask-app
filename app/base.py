@@ -5,10 +5,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String
 
-engine = create_engine("postgres://gfmkzmyxtwcggf:0cee6a4bcf4167ea61a5c9dfe8e7b0f1904a0bfc7d57eb5fd45e80f292c7e80b@ec2-50-17-231-192.compute-1.amazonaws.com:5432/d2s3tb1rjh5m98")
+engine = create_engine("postgresql://postgres:8@ttle#1eld5@localhost:5432/cs50")
 Session = sessionmaker(bind=engine)
 
 Base = declarative_base()
+
 
 class Books(Base):
     __tablename__ = "books"
@@ -25,3 +26,12 @@ class Books(Base):
         self.year = year
 
 
+class User(Base):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), index=True, unique=True)
+    email = db.Column(db.String(120), index=True, unique=True)
+    password_hash = db.Column(db.String(128))
+
+    def __repr__(self):
+        return f"<User {self.username}>"

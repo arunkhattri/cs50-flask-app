@@ -6,7 +6,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Flask App</a>
+        <a class="navbar-brand" href="#">BIBLIOSMIA</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -19,7 +19,11 @@
                 <a class="nav-link" href="#">Books</a>
             </li>
             <li class="nav-item">
+                {% if current_user.is_anonymous %}
                 <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                {% else %}
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                {% endif %}
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Sign Up</a>

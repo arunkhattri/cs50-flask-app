@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, rend
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
@@ -26,3 +26,12 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+
+class SearchForm(FlaskForm):
+    # sequence of (value, label) pairs
+    choices = [('isbn', 'ISBN'),
+               ('title', 'Title'),
+               ('author', "Author")]
+    select = SelectField('Search for Books:', choices=choices)
+    search = StringField('')

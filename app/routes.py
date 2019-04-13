@@ -1,8 +1,8 @@
 import os
-from flask import session, render_template, flash, redirect, url_for
+from flask import session, render_template, flash, redirect, url_for, request
 from flask_session import Session
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, SearchForm
 from app import app, db
 from app.models import User
 # from sqlalchemy import create_engine
@@ -23,7 +23,6 @@ Session(app)
 
 
 @app.route("/")
-@app.route("/index")
 @login_required
 def index():
     return render_template("home.html")
@@ -43,10 +42,12 @@ def login():
         return redirect(url_for('index'))
     return render_template("login.html", form=form)
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -61,3 +62,11 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('registration.html', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    search = SearchForm(request.form)
+    if request.method == 'POST':
+        return search_results(search)
+    return render_template("search.html", form=search)

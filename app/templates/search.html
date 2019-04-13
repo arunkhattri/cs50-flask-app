@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  Bibliosmia Search
+{% endblock title %}
+
+{% block body %}
+
+    <h2>Bibliosmia Book Search</h2>
+    <form method="POST" action="">
+    {{ form.hidden_tag() }}
+      <p>
+        {{ form.select.label }}<br>
+        {{ form.select }}<br>
+        {{ form.search.label }}<br>
+        {{ form.search(size=64) }}<br>
+
+        {% for error in form.search.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p><input type="submit" value="Search"></p>
+      
+    </form>
+  
+  
+{% endblock body %}

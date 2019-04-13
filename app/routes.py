@@ -4,9 +4,9 @@ from flask_session import Session
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, SearchForm
 from app import app, db
-from app.models import User
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import scoped_session, sessionmaker
+from app.models import User, Books
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 # Check for environment variable
 # if not os.getenv("DATABASE_URL"):
@@ -18,8 +18,8 @@ from app.models import User
 Session(app)
 
 # Set up database
-# engine = create_engine(os.getenv("DATABASE_URL"))
-# db = scoped_session(sessionmaker(bind=engine))
+engine = create_engine("postgresql://postgres:8@ttle#1eld5@localhost:5432/cs50")
+pg = scoped_session(sessionmaker(bind=engine))
 
 
 @app.route("/")
@@ -70,3 +70,33 @@ def search():
     if request.method == 'POST':
         return search_results(search)
     return render_template("search.html", form=search)
+
+
+@app.route('/results')
+def search_results(search):
+    """List all Books"""
+    search_string = search.data['search']
+    select_choice = search.data['select']
+    if select_choice == 'isbn':
+        results = pg.execute("SELECT * FROM books WHERE isbn = :isbn",
+                             {"isbn": search_string}).fetchone()
+        if results is None:
+            return render_template("error.html",
+                                   message="No such ISBN in the database.")
+    elif select_choice == 'title':
+        results = pg.execute("SELECT * FROM books WHERE title = :title",
+                             {"title": search_string}).fetchone()
+        if results is None:
+            return render_template("error.html",
+                                   message="No such Title in the database.")
+    else:
+        results = pg.execute("SELECT * FROM books WHERE author = :author",
+                             {"author": search_string}).fetchone()
+        if results is None:
+            return render_template("error.html",
+                                   message="No such Author in the database.")
+    return render_template('results.html', results=results)
+
+
+# TODO: results.html
+# TODO: error.html

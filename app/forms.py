@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from wtforms import Form, SelectField, StringField, validators
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
@@ -28,10 +29,10 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 
-class SearchForm(FlaskForm):
+class SearchForm(Form):
     # sequence of (value, label) pairs
     choices = [('isbn', 'ISBN'),
                ('title', 'Title'),
                ('author', "Author")]
-    select = SelectField('Search for Books:', choices=choices)
-    search = StringField('')
+    select = SelectField('Search for Books:', choices=choices, default='isbn')
+    search = StringField('Enter text', [validators.Length(min=3)])

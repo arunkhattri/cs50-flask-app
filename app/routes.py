@@ -66,32 +66,34 @@ def register():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    search = SearchForm(request.form)
-    if request.method == 'POST':
-        return search_results(search)
-    return render_template("search.html", form=search)
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SearchForm()
+    if request.method == 'POST' and form.validate():
+        choice = form.select.data
+        search_str = form.search.data
+        return search_results(choice, search_str)
+    return render_template("search.html", form=form)
 
 
 @app.route('/results')
-def search_results(search):
+def search_results(choice, search_str):
     """List all Books"""
-    search_string = search.data['search']
-    select_choice = search.data['select']
-    if select_choice == 'isbn':
+    if choice == 'isbn':
         results = pg.execute("SELECT * FROM books WHERE isbn = :isbn",
-                             {"isbn": search_string}).fetchone()
+                             {"isbn": search_str}).fetchone()
         if results is None:
             return render_template("error.html",
                                    message="No such ISBN in the database.")
-    elif select_choice == 'title':
+    elif choice == 'title':
         results = pg.execute("SELECT * FROM books WHERE title = :title",
-                             {"title": search_string}).fetchone()
+                             {"title": search_str}).fetchone()
         if results is None:
             return render_template("error.html",
                                    message="No such Title in the database.")
     else:
         results = pg.execute("SELECT * FROM books WHERE author = :author",
-                             {"author": search_string}).fetchone()
+                             {"author": search_str}).fetchone()
         if results is None:
             return render_template("error.html",
                                    message="No such Author in the database.")
